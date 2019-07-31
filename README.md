@@ -4,3 +4,5 @@ Components used to start CARTA from a web server. These include tools to maintai
 Still need to add cmake files, but have been compiling the cartadbctl program with:
 
 g++ -g -I/usr/local/include/libbson-1.0 -I/usr/local/include/libmongoc-1.0/ cartadbctl.cc -o cartadbctl -lmongoc-1.0 -lbson-1.0 -ljsoncpp> err.txt 2>&1 
+
+Paths in scripts currently assume that carta_run_local.sh and carta_backend are both placed in /usr/local/CARTA/bin .
