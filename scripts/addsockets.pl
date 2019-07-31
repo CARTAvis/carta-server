@@ -10,6 +10,6 @@ print("ProxyRequests Off\n");
 print("ProxyPreserveHost On\n");
 
 for( my $i = $ARGV[0]; $i <= $ARGV[1] ; $i++ ) {
-    print("ProxyPass \"/socket\" \"ws://localhost:${i}/\"\n");
-    print("ProxyPassReverse \"/socket\" \"ws://localhost:${i}/\"\n");
+    print("ProxyPass \"/socket${i}\" \"ws://localhost:${i}/\"\n");
+    print("ProxyPassReverse \"/socket${i}\" \"ws://localhost:${i}/\"\n");
 }
