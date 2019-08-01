@@ -10,5 +10,13 @@ Paths in scripts currently assume that carta_run_local.sh and carta_backend are 
 On ubuntu you will need the following packages:
 libmongoc-dev
 libbson-dev
+mongodb
 mongo-tools
 apache2-suexec-custom
+
+
+Adding a system user to the database. This creates the security token needed to access the carta_backend server.
+./cartadbctl -u simmonds
+WARNING : This program is under construction and not all the options have been implemented yet
+User = simmonds
+ done ...
