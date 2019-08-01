@@ -1,23 +1,24 @@
 #!/usr/bin/perl
 
-#use strict;
+use strict;
 use POSIX 'setsid';
 use CGI::Carp qw(fatalsToBrowser);
 use CGI qw(:standard);
 use JSON;
 
 my $username = $ENV{LOGNAME} || getpwuid($<) || $ENV{USER}; 
-my $filename = "/users/${username}/.carta/config";
-open FILE, $filename or die "can't open $filename";
 
 use MongoDB ();
 use Data::Dumper qw(Dumper);
 my $client = MongoDB::MongoClient->new(host => 'localhost', port => 27017);
-my $db   = $client->get_database( 'CARTA'  );
+my $db = $client->get_database( 'CARTA'  );
 
 my $people_coll = $db->get_collection('userconf');
 my $people = $people_coll->find;
-my $tester= 1;
+my $tester = 1;
+my $token = "no_token";
+my $socket = 3002;
+my $sockstring = "socket3002";
 
 while (my $p = $people->next) {
     if ( $p->{"username"} eq $username ) {
@@ -26,11 +27,6 @@ while (my $p = $people->next) {
 	$tester = 0;
     }
 }
-
-
-my $token = $perl_scalar->{"token"}; 
-my $socket = $perl_scalar->{"socket"};
-my $sockstring = "socket" . $socket; 
 
 my %json_hash= ('username' => $username, 'token' => $token, 'socket' => $sockstring);
 
