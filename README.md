@@ -12,6 +12,7 @@ libmongoc-dev
 libbson-dev
 mongodb
 mongo-tools
+apache2
 apache2-suexec-custom
 
 
