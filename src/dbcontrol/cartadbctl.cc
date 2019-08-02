@@ -1,7 +1,7 @@
 #include <string.h>
 #include <time.h>
 #include <unistd.h>
-#include <mongoc/mongoc.h>
+#include <mongoc.h>
 #include <iostream>
 #include <string>
 
@@ -189,7 +189,7 @@ main (int argc, char *argv[])
     reader.parse(str, json_config);
     bson_free (str);    
     tmp_socket = json_config["socket"].asString();
-    strcpy(tmp_char_string,tmp_socket.c_str() + 6);
+    strcpy(tmp_char_string,tmp_socket.c_str());
     if (user_socket == atoi(tmp_char_string)) {
       ++user_socket;
     } else {
@@ -201,7 +201,7 @@ main (int argc, char *argv[])
   str = randstring(64);
   sock_str = (char*)malloc(120);
 
-  sprintf(sock_str,"socket%d", user_socket);
+  sprintf(sock_str,"%d", user_socket);
   sprintf(num_threads_str,"%d", num_threads);
     
   insert = bson_new();
