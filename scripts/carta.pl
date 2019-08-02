@@ -28,6 +28,8 @@ while (my $p = $people->next) {
     }
 }
 
+$sockstring = "socket" . $socket;
+
 my %json_hash= ('username' => $username, 'token' => $token, 'socket' => $sockstring);
 
 print header('application/json');
