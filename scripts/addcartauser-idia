@@ -1,0 +1,13 @@
+#!/usr/bin/perl                                                                 
+if ($#ARGV != 1) {
+    print("Usage : $0 username group\n");
+    exit(1);
+}
+
+my $username = $ARGV[0];
+my $group = $ARGV[1];
+
+system("mkdir -p /users/${username}/public_html/cgi-bin/logs");
+system("chown -R ${username}.${group} /users/${username}");
+
+system("cp /usr/local/CARTA/scripts/carta.pl /users/${username}/public_html/cgi-bin");
