@@ -44,8 +44,15 @@
   curl_exec($ch);
   
   // forward the response code
-  $http_code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-  http_response_code($http_code);
+  if (!curl_errno($ch)) {
+    switch ($http_code = curl_getinfo($ch, CURLINFO_HTTP_CODE)) {
+      case 404:
+        http_response_code(403);
+        break;
+      default:
+        http_response_code($http_code);
+    }
+  }
 
   // close cURL resource, and free up system resources
   curl_close($ch);
