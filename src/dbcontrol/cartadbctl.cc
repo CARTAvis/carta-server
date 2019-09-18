@@ -1,9 +1,13 @@
 #include <string.h>
 #include <time.h>
+
+#define _XOPEN_SOURCE_
 #include <unistd.h>
 #include <mongoc.h>
 #include <iostream>
 #include <string>
+
+
 
 #include <jsoncpp/json/json.h>
 #include <jsoncpp/json/value.h>
@@ -41,6 +45,8 @@ char *randstring(int length) {
 }
 
 
+char * shared_token = "skU0p!2XH2!zCszyzzatRLQggk0tv0EkHVHuU6aYR!hQ6G?oDMedhsXnCGdv4eF8";
+
 int
 main (int argc, char *argv[])
 {
@@ -66,6 +72,7 @@ main (int argc, char *argv[])
   char * bvalue = NULL;
   char * tvalue = NULL;
   char * mvalue = NULL;
+  char * encrypted = NULL;
   char num_threads_str[10];
   char tmp_char_string[10];
   int c;
@@ -198,7 +205,6 @@ main (int argc, char *argv[])
   }
   bson_destroy (query);
   
-  str = randstring(64);
   sock_str = (char*)malloc(120);
 
   sprintf(sock_str,"%d", user_socket);
@@ -208,14 +214,17 @@ main (int argc, char *argv[])
 
   bson_init(&userconf);
   BSON_APPEND_UTF8 (&userconf,"username", uvalue);
-  BSON_APPEND_UTF8 (&userconf,"token", str);
   BSON_APPEND_UTF8 (&userconf,"socket", sock_str);
   if (pvalue) {
+    str = shared_token;
     BSON_APPEND_UTF8 (&userconf,"usertype", "external");
-    BSON_APPEND_UTF8 (&userconf,"password", pvalue);
+    encrypted = crypt(pvalue, "x6");
+    BSON_APPEND_UTF8 (&userconf,"password", encrypted);
   } else {
+    str = randstring(64);
     BSON_APPEND_UTF8 (&userconf,"usertype", "system");
   }
+  BSON_APPEND_UTF8 (&userconf,"token", str);
   BSON_APPEND_UTF8 (&userconf,"num_threads", num_threads_str);
     
   if (!mongoc_collection_insert_one (collection, &userconf, NULL, NULL, &error)) {
@@ -225,7 +234,7 @@ main (int argc, char *argv[])
   bson_destroy (insert);
   bson_destroy (&reply);
   bson_destroy (command);
-  bson_free (str);
+  //  bson_free (str);
 
   mongoc_collection_destroy (collection);
   mongoc_database_destroy (database);
