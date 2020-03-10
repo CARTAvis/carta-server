@@ -187,7 +187,8 @@ main (int argc, char *argv[])
   bson_destroy (query);
   
   query = bson_new ();
-  cursor = mongoc_collection_find_with_opts (collection, query, NULL, NULL);
+  opts = BCON_NEW ("sort", "{", "socket", BCON_INT32 (1), "}");
+  cursor = mongoc_collection_find_with_opts (collection, query, opts, NULL);
   
   user_socket = lowsock;
 
