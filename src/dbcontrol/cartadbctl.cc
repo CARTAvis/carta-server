@@ -56,7 +56,7 @@ main (int argc, char *argv[])
   mongoc_database_t *database;
   mongoc_collection_t *collection;
   mongoc_cursor_t *cursor;
-  bson_t *command, reply, *insert, userconf, *query;
+  bson_t *command, reply, *insert, userconf, *query, *opts;
   const bson_t *doc;
   bson_error_t error;
   char *str;
