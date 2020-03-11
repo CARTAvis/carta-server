@@ -198,7 +198,6 @@ main (int argc, char *argv[])
 
   while (mongoc_cursor_next (cursor, &doc)) {
     str = bson_as_canonical_extended_json (doc, NULL);
-    std::cerr << str << std::endl;
     reader.parse(str, json_config);
     bson_free (str);    
     tmp_socket = json_config["socket"].asString();
