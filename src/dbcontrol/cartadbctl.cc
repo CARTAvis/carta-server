@@ -186,14 +186,19 @@ main (int argc, char *argv[])
   }
   bson_destroy (query);
   
-  query = bson_new ();
-  opts = BCON_NEW ("sort", "{", "socket", BCON_INT32 (1), "}");
-  cursor = mongoc_collection_find_with_opts (collection, query, opts, NULL);
-  
   user_socket = lowsock;
+  
+  sock_str = (char*)malloc(120);
+  sprintf(sock_str,"%d", user_socket);
+
+  query = BCON_NEW ("socket", "{", "$gte", BCON_UTF8 (sock_str), "}");
+  // locale is a compulsory parameter
+  opts = BCON_NEW("sort", "{", "socket", BCON_INT32 (1), "}", "collation", "{", "locale", BCON_UTF8 ("en"), "numericOrdering", BCON_BOOL(true), "}");
+  cursor = mongoc_collection_find_with_opts (collection, query, opts, NULL);
 
   while (mongoc_cursor_next (cursor, &doc)) {
     str = bson_as_canonical_extended_json (doc, NULL);
+    std::cerr << str << std::endl;
     reader.parse(str, json_config);
     bson_free (str);    
     tmp_socket = json_config["socket"].asString();
@@ -204,9 +209,8 @@ main (int argc, char *argv[])
       break;
     }
   }
-  bson_destroy (query);
   
-  sock_str = (char*)malloc(120);
+  bson_destroy (query);
 
   sprintf(sock_str,"%d", user_socket);
   sprintf(num_threads_str,"%d", num_threads);
