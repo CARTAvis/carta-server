@@ -1,7 +1,7 @@
 These are instructions to set up a fully working carta-server version on an Ubuntu 18.04 server from scratch. It also involves building carta-backend and carta-frontend from source.
 Note: Some modifications may still be needed for your system.
 
- # Part 0. Install all required packages:
+ # Part 0: Install all required packages:
  This step should install all required packages on the system to build the carta-backend, carta-frontend, and carta-server.
 ```
 sudo apt-get update

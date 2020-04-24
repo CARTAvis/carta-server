@@ -73,7 +73,7 @@ if ($string ge 711) {
   system("ls -ld /asiaa/home/${username}");
   print("\n");
   print("Finished; You are ready to run CARTA-server at ASIAA\n");
-  print("Go to https://acdc0.asiaa.sinica.edu.tw in your web browser and enter your IAA username and password\n");
+  print("Go to https://hilo.asiaa.sinica.edu.tw in your web browser and enter your IAA username and password\n");
   print("Your CARTA home folder will be your /asiaa/home/${username} folder\n");
   exit(1);
  }
