@@ -1,0 +1,92 @@
+#!/usr/bin/perl                                                                 
+
+use Fcntl ':mode';
+
+if ($#ARGV != 0) {
+    print("Usage : $0 username\n");
+    exit(1);
+}
+
+my $username = $ARGV[0];
+
+print("Making folder structure:\n");
+print("/asiaa/home/${username}/public_html/cgi-bin/logs\n");
+system("mkdir -p /asiaa/home/${username}/public_html/cgi-bin/logs");
+print("\n");
+print("\n");
+print("Copying carta.pl script in place:\n");
+print("Copying carta.pl to /asiaa/home/${username}/public_html/cgi-bin\n");
+system("cp /penguin/apps/casa/carta.pl /asiaa/home/${username}/public_html/cgi-bin");
+system("chown -R ${username}.iaa /asiaa/home/${username}/public_html/cgi-bin/carta.pl");
+print("\n");
+print("\n");
+print("Note: carta-server needs group and other execute permissions (drwx--x--x) on your /asiaa/home/${username} folder.\n");
+print("This is necessary so that Apache can execute the carta.pl inside your home folder.\n");
+print("\n");
+print("Now checking if we need to change it.\n");
+print("Your current permissions are:\n");
+print("\n");
+system("ls -ld /asiaa/home/${username}");
+print("\n");
+
+$filename = "/asiaa/home/${username}" ;
+
+if (($dev,$ino,$mode,$nlink,$uid,$gid,$rdev,$size,$atime,$mtime,$ctime,$blksize,$blocks) = lstat($filename)) {
+        $ftypes[S_IFDIR] = "d";
+        $ftypes[S_IFCHR] = "c";
+        $ftypes[S_IFBLK] = "b";
+        $ftypes[S_IFREG] = "-";
+        $ftypes[S_IFIFO] = "p";
+        $ftypes[S_IFLNK] = "l";
+        $ftypes[S_IFSOCK] = "s";
+
+        $permissions = sprintf "%04o", S_IMODE($mode);
+
+        print "File permissions: $permissions\n";
+}
+
+$string = int($permissions);
+
+
+if ($string ge 711) {
+ print("No permission changes needed.\n");
+ print("\n");
+ print("Finished; You are ready to run CARTA-server at ASIAA\n");
+ print("Go to https://hilo.asiaa.sinica.edu.tw in your web browser and enter your IAA username and password\n");
+ print("Your CARTA home folder will be your /asiaa/home/${username} folder\n");
+ exit(1);
+} else {
+
+ print("I need to apply drwx--x--x permissions (chmod 711) to your /asiaa/home${username} folder\n");
+ print "Please enter 'YES' if you agree, or anything else if you disagree\n";
+
+ my $userword = <STDIN>;
+ chomp $userword;
+
+ if ($userword eq "YES") {
+  system("chmod 711 /asiaa/home/${username}");
+  print("\n");
+  print("\n");
+  print("Permissions changed\n");
+  print("Your new permissions are:\n");
+  print("\n");
+  system("ls -ld /asiaa/home/${username}");
+  print("\n");
+  print("Finished; You are ready to run CARTA-server at ASIAA\n");
+  print("Go to https://acdc0.asiaa.sinica.edu.tw in your web browser and enter your IAA username and password\n");
+  print("Your CARTA home folder will be your /asiaa/home/${username} folder\n");
+  exit(1);
+ }
+
+ if ($userword ne "YES") {
+  print("\n");
+  print("\n");
+  print("\n");
+  print("No permission changes made to /asiaa/home/${username}\n");
+  print("You can not run CARTA-server at ASIAA\n");
+  print("Exiting setup\n");
+  exit(1);
+ }
+
+}
+
