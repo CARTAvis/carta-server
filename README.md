@@ -1,4 +1,4 @@
-# carta-server
+# carta-server [deprecated]
 Components used to start CARTA from a web server. These include tools to maintain a user database needed by the CARTA backend when it is started in this way.
 
 Still need to add `cmake` files, but have been compiling the `cartadbctl` program with:
